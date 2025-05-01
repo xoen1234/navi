@@ -3,30 +3,32 @@ fetch('menu.json')
   .then(res => res.json())
   .then(data => buildMenu(data));
 
-function buildMenu(menuData, parentElement = document.getElementById('menu')) {
-  menuData.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = item.name;
-
-    if (item.children && item.children.length > 0) {
-      const subUl = document.createElement('ul');
-      buildMenu(item.children, subUl);
-      li.appendChild(subUl);
-
-      li.addEventListener('click', (e) => {
-        e.stopPropagation();
-        li.classList.toggle('open');
-      });
-    } else if (item.url) {
-      li.addEventListener('click', () => {
-        openTab(item.name, item.url);
-        updateBreadcrumb(item.name);
-      });
-    }
-
-    parentElement.appendChild(li);
-  });
-}
+  function buildMenu(menuData, parentElement = document.getElementById('menu'), path = []) {
+    menuData.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item.name;
+  
+      const currentPath = [...path, item.name];
+  
+      if (item.children && item.children.length > 0) {
+        const subUl = document.createElement('ul');
+        buildMenu(item.children, subUl, currentPath);
+        li.appendChild(subUl);
+  
+        li.addEventListener('click', (e) => {
+          e.stopPropagation();
+          li.classList.toggle('open');
+        });
+      } else if (item.url) {
+        li.addEventListener('click', () => {
+          openTab(item.name, item.url, currentPath, item.keepAlive);
+        });
+      }
+  
+      parentElement.appendChild(li);
+    });
+  }
+  
 
 // 主题切换
 document.getElementById('toggle-theme').addEventListener('click', () => {
@@ -37,8 +39,7 @@ document.getElementById('toggle-theme').addEventListener('click', () => {
 const tabsContainer = document.getElementById('tabs');
 const iframe = document.getElementById('content-frame');
 let tabs = {};
-
-function openTab(title, url) {
+function openTab(title, url, path = [title]) {
   if (tabs[title]) {
     switchTab(title);
     return;
@@ -60,7 +61,7 @@ function openTab(title, url) {
   tab.addEventListener('click', () => switchTab(title));
 
   tabsContainer.appendChild(tab);
-  tabs[title] = { tab, url };
+  tabs[title] = { tab, url, path };
   switchTab(title);
 }
 
@@ -73,7 +74,7 @@ function switchTab(title) {
   if (target) {
     target.tab.classList.add('active');
     iframe.src = target.url;
-    updateBreadcrumb(title);
+    updateBreadcrumb(target.path);
   }
 }
 

@@ -8,7 +8,8 @@
       },
       {
         "name": "角色管理",
-        "url": "https://www.bilibili.com/"
+        "url": "https://www.bilibili.com/",
+        "keepAlive": true
       }
     ]
   },
@@ -24,7 +25,8 @@
         "children": [
           {
             "name": "月报",
-            "url": "https://www.bilibili.com/"
+            "url": "https://www.bilibili.com/",
+            "keepAlive": true
           },
           {
             "name": "年报",
