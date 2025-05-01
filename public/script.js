@@ -116,3 +116,30 @@ function removeTab(title, tabEl) {
 function updateBreadcrumb(title) {
   document.getElementById('breadcrumb').textContent = title;
 }
+
+
+let hoverExpandEnabled = true;
+
+// 悬停开关按钮
+document.getElementById("hover-toggle").addEventListener("click", () => {
+  hoverExpandEnabled = !hoverExpandEnabled;
+  document.getElementById("hover-toggle").textContent = hoverExpandEnabled ? "🖱️ 悬停开" : "🖱️ 悬停关";
+});
+
+// 鼠标悬停控制展开
+const sidebar = document.getElementById("sidebar");
+
+sidebar.addEventListener("mouseenter", () => {
+  if (hoverExpandEnabled) sidebar.classList.remove("collapsed");
+});
+
+sidebar.addEventListener("mouseleave", () => {
+  if (hoverExpandEnabled) sidebar.classList.add("collapsed");
+});
+
+// 手动展开按钮
+document.getElementById("manual-toggle").addEventListener("click", () => {
+  sidebar.classList.toggle("collapsed");
+  const isCollapsed = sidebar.classList.contains("collapsed");
+  document.getElementById("manual-toggle").textContent = isCollapsed ? "📌 展开" : "📌 收起";
+});
