@@ -1,57 +1,99 @@
-async function loadMenu() {
-  const response = await fetch('/menu');
-  const menu = await response.json();
+// 加载菜单
+fetch('menu.json')
+  .then(res => res.json())
+  .then(data => buildMenu(data));
 
-  const sidebar = document.getElementById('sidebar');
-  const breadcrumb = document.getElementById('breadcrumb');
-  const iframe = document.getElementById('content-frame');
+function buildMenu(menuData, parentElement = document.getElementById('menu')) {
+  menuData.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item.name;
 
-  menu.forEach(group => {
-    const groupDiv = document.createElement('div');
-    groupDiv.textContent = group.name;
-    groupDiv.className = 'menu-group';
+    if (item.children && item.children.length > 0) {
+      const subUl = document.createElement('ul');
+      buildMenu(item.children, subUl);
+      li.appendChild(subUl);
 
-    const subList = document.createElement('div');
-    subList.className = 'submenu hidden';
-
-    group.children.forEach(item => {
-      const itemDiv = document.createElement('div');
-      itemDiv.textContent = item.name;
-      itemDiv.className = 'submenu-item';
-      itemDiv.addEventListener('click', () => {
-        iframe.src = item.url;
-        breadcrumb.textContent = `${group.name} > ${item.name}`;
+      li.addEventListener('click', (e) => {
+        e.stopPropagation();
+        li.classList.toggle('open');
       });
-      subList.appendChild(itemDiv);
-    });
+    } else if (item.url) {
+      li.addEventListener('click', () => {
+        openTab(item.name, item.url);
+        updateBreadcrumb(item.name);
+      });
+    }
 
-    groupDiv.addEventListener('click', () => {
-      subList.classList.toggle('hidden');
-      groupDiv.classList.toggle('expanded');
-    });
-
-    sidebar.appendChild(groupDiv);
-    sidebar.appendChild(subList);
+    parentElement.appendChild(li);
   });
 }
 
 // 主题切换
 document.getElementById('toggle-theme').addEventListener('click', () => {
   document.body.classList.toggle('dark');
-  document.getElementById('sidebar').classList.toggle('dark');
-  document.getElementById('breadcrumb').classList.toggle('dark');
 });
 
-// 鼠标移到最左边自动展开侧边栏
-const sidebar = document.getElementById('sidebar');
-const hoverZone = document.getElementById('edge-hover-zone');
+// 标签页功能
+const tabsContainer = document.getElementById('tabs');
+const iframe = document.getElementById('content-frame');
+let tabs = {};
 
-hoverZone.addEventListener('mouseenter', () => {
-  sidebar.classList.remove('collapsed');
-});
+function openTab(title, url) {
+  if (tabs[title]) {
+    switchTab(title);
+    return;
+  }
 
-sidebar.addEventListener('mouseleave', () => {
-  sidebar.classList.add('collapsed');
-});
+  const tab = document.createElement('div');
+  tab.className = 'tab active';
+  tab.textContent = title;
 
-loadMenu();
+  const closeBtn = document.createElement('span');
+  closeBtn.className = 'close-btn';
+  closeBtn.textContent = '×';
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    removeTab(title, tab);
+  });
+
+  tab.appendChild(closeBtn);
+  tab.addEventListener('click', () => switchTab(title));
+
+  tabsContainer.appendChild(tab);
+  tabs[title] = { tab, url };
+  switchTab(title);
+}
+
+function switchTab(title) {
+  Object.keys(tabs).forEach(key => {
+    tabs[key].tab.classList.remove('active');
+  });
+
+  const target = tabs[title];
+  if (target) {
+    target.tab.classList.add('active');
+    iframe.src = target.url;
+    updateBreadcrumb(title);
+  }
+}
+
+function removeTab(title, tabElement) {
+  const wasActive = tabElement.classList.contains('active');
+  tabElement.remove();
+  delete tabs[title];
+
+  if (wasActive) {
+    const keys = Object.keys(tabs);
+    if (keys.length > 0) {
+      switchTab(keys[keys.length - 1]);
+    } else {
+      iframe.src = '';
+      updateBreadcrumb('首页');
+    }
+  }
+}
+
+// 面包屑
+function updateBreadcrumb(title) {
+  document.getElementById('breadcrumb').textContent = title;
+}

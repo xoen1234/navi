@@ -1,145 +1,147 @@
-/* 基础布局 */
+:root {
+  --sidebar-width: 220px;
+  --sidebar-collapsed-width: 50px;
+  --sidebar-background: #f8f9fa;
+  --sidebar-color: #333;
+  --breadcrumb-background: #e9ecef;
+  --breadcrumb-color: #333;
+  --tab-active-color: #007bff;
+}
+
+body.dark {
+  --sidebar-background: #222;
+  --sidebar-color: #ddd;
+  --breadcrumb-background: #333;
+  --breadcrumb-color: #fff;
+  --tab-active-color: #3399ff;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: sans-serif;
   display: flex;
   height: 100vh;
   overflow: hidden;
 }
 
-/* 定义颜色变量 */
-:root {
-  --background-color: #f4f4f4;
-  --text-color: black;
-  --sidebar-background: #f4f4f4;
-  --breadcrumb-background: #eee;
-  --button-background: transparent;
-  --button-color: black;
+#app {
+  display: flex;
+  width: 100%;
 }
 
-.dark {
-  --background-color: #333;
-  --text-color: white;
-  --sidebar-background: #333;
-  --breadcrumb-background: #444;
-  --button-background: transparent;
-  --button-color: white;
-}
-
-/* 侧边栏样式 */
 #sidebar {
-  width: 200px;
   background-color: var(--sidebar-background);
-  padding: 10px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  transition: width 0.3s ease;
-  white-space: nowrap;
+  color: var(--sidebar-color);
+  width: var(--sidebar-width);
+  transition: width 0.3s;
+  overflow: hidden;
+  position: relative;
 }
 
 #sidebar.collapsed {
-  width: 40px;  /* 更窄的宽度 */
-  overflow: hidden;
+  width: var(--sidebar-collapsed-width);
 }
 
-/* 菜单项 */
-.menu-group, .submenu-item {
-  font-weight: bold;
+#sidebar:hover {
+  width: var(--sidebar-width);
+}
+
+#menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#menu li {
+  padding: 10px;
   cursor: pointer;
-  padding-left: 18px;
-  position: relative;
-  white-space: nowrap; /* 防止换行 */
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* 文本超出时显示省略号 */
-  transition: padding-left 0.3s ease;
+  text-overflow: ellipsis;
 }
 
-.menu-group::before {
-  content: '▶';
-  position: absolute;
-  left: 0;
-  top: 0;
-  transition: transform 0.2s ease;
+#menu li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-.menu-group.expanded::before {
-  content: '▼';
+#menu li ul {
+  padding-left: 20px;
+  display: none;
 }
 
-/* 子菜单项 */
-.submenu {
-  margin-left: 16px;
-  transition: all 0.2s ease;
+#menu li.open > ul {
+  display: block;
 }
 
-.submenu-item {
-  margin: 4px 0;
-  cursor: pointer;
-  padding-left: 8px;
+#content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.submenu-item:hover {
-  background-color: #ddd;
-}
-
-/* 侧边栏折叠时，调整字体大小和可见度 */
-#sidebar.collapsed .menu-group,
-#sidebar.collapsed .submenu-item {
-  padding-left: 10px;  /* 减小缩进 */
-  font-size: 12px;  /* 调整字体大小 */
-  text-align: center; /* 文本居中 */
-}
-
-/* 面包屑导航容器 */
 #breadcrumb-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: var(--breadcrumb-background);
+  color: var(--breadcrumb-color);
   padding: 10px;
-  flex-shrink: 0;
-  color: var(--text-color);
+  border-bottom: 1px solid #ccc;
 }
 
-/* 面包屑导航 */
-#breadcrumb {
-  margin: 0;
-}
-
-/* 主题切换按钮样式 */
 .theme-toggle-btn {
-  padding: 5px 10px;
-  cursor: pointer;
-  background-color: var(--button-background);
+  background: none;
   border: none;
-  font-size: 20px;
-  color: var(--button-color);
+  font-size: 18px;
+  cursor: pointer;
+  color: inherit;
 }
 
-/* 内容区域 */
-#main {
+#tabs-container {
+  background-color: var(--breadcrumb-background);
+  border-bottom: 1px solid #ddd;
+}
+
+.tabs {
   display: flex;
-  flex-direction: column;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 10px;
+  margin-right: 5px;
+  background: var(--sidebar-background);
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.tab.active {
+  background-color: var(--tab-active-color);
+  color: white;
+}
+
+.tab .close-btn {
+  margin-left: 5px;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#main {
   flex-grow: 1;
+  position: relative;
+}
+
+#iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 #content-frame {
-  flex-grow: 1;
   width: 100%;
+  height: 100%;
   border: none;
-}
-
-/* 自动展开感应区 */
-#edge-hover-zone {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 5px;
-  z-index: 10;
-}
-
-/* 隐藏元素 */
-.hidden {
-  display: none;
 }

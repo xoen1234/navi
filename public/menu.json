@@ -1,16 +1,37 @@
 [
   {
-    "name": "导航一",
+    "name": "系统管理",
     "children": [
-      { "name": "百度", "url": "https://www.baidu.com" },
-      { "name": "哔哩哔哩", "url": "https://www.bilibili.com" }
+      {
+        "name": "用户管理",
+        "url": "http://mtab.yanyf.cn/"
+      },
+      {
+        "name": "角色管理",
+        "url": "https://www.bilibili.com/"
+      }
     ]
   },
   {
-    "name": "导航二",
+    "name": "统计报表",
     "children": [
-      { "name": "GitHub", "url": "https://github.com" },
-      { "name": "Gitee", "url": "https://gitee.com" }
+      {
+        "name": "销售数据",
+        "url": "https://example.com/sales"
+      },
+      {
+        "name": "财务数据",
+        "children": [
+          {
+            "name": "月报",
+            "url": "https://www.bilibili.com/"
+          },
+          {
+            "name": "年报",
+            "url": "https://example.com/year"
+          }
+        ]
+      }
     ]
   }
 ]
