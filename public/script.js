@@ -40,16 +40,18 @@ document.getElementById('toggle-theme').addEventListener('click', () => {
 // 标签页功能
 const tabsContainer = document.getElementById('tabs');
 const iframe = document.getElementById('content-frame');
+let tabIdCounter = 0;
+function generateTabId() {
+  return `tab-${++tabIdCounter}`;
+}
 let tabs = {};
 function openTab(title, url, path = [title]) {
-  if (tabs[title]) {
-    switchTab(title);
-    return;
-  }
+  const id = generateTabId();
 
   // 创建 tab 标签
   const tab = document.createElement('div');
   tab.className = 'tab active';
+  tab.dataset.id = id; // 设置唯一 ID
   tab.textContent = title;
 
   const closeBtn = document.createElement('span');
@@ -57,11 +59,11 @@ function openTab(title, url, path = [title]) {
   closeBtn.textContent = '×';
   closeBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    removeTab(title, tab);
+    removeTab(id);
   });
 
   tab.appendChild(closeBtn);
-  tab.addEventListener('click', () => switchTab(title));
+  tab.addEventListener('click', () => switchTab(id));
 
   tabsContainer.appendChild(tab);
 
@@ -69,22 +71,23 @@ function openTab(title, url, path = [title]) {
   const iframe = document.createElement('iframe');
   iframe.src = url;
   iframe.className = 'iframe-tab';
-  iframe.dataset.tab = title;
+  iframe.dataset.id = id;
   iframe.style.display = 'none';
   document.getElementById('main').appendChild(iframe);
 
   // 注册
-  tabs[title] = { tab, url, path, iframe };
-  switchTab(title);
+  tabs[id] = { id, title, path, tab, iframe };
+  switchTab(id);
 }
 
-function switchTab(title) {
-  Object.keys(tabs).forEach(key => {
-    tabs[key].tab.classList.remove('active');
-    tabs[key].iframe.style.display = 'none';
+
+function switchTab(id) {
+  Object.values(tabs).forEach(({ tab, iframe }) => {
+    tab.classList.remove('active');
+    iframe.style.display = 'none';
   });
 
-  const target = tabs[title];
+  const target = tabs[id];
   if (!target) return;
 
   target.tab.classList.add('active');
@@ -92,15 +95,15 @@ function switchTab(title) {
   updateBreadcrumb(target.path);
 }
 
-function removeTab(title, tabEl) {
-  const tabData = tabs[title];
-  if (tabData.iframe) {
-    tabData.iframe.remove();
-  }
-  tabEl.remove();
-  delete tabs[title];
 
-  // 切换到最后一个标签
+function removeTab(id) {
+  const tabData = tabs[id];
+  if (!tabData) return;
+
+  tabData.iframe.remove();
+  tabData.tab.remove();
+  delete tabs[id];
+
   const keys = Object.keys(tabs);
   if (keys.length > 0) {
     switchTab(keys[keys.length - 1]);
@@ -108,6 +111,7 @@ function removeTab(title, tabEl) {
     updateBreadcrumb('');
   }
 }
+
 
 // 面包屑
 function updateBreadcrumb(title) {
