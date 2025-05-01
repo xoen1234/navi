@@ -34,11 +34,60 @@ body {
   box-sizing: border-box;
   overflow-y: auto;
   transition: width 0.3s ease;
+  white-space: nowrap;
 }
 
 #sidebar.collapsed {
-  width: 40px;
+  width: 40px;  /* 更窄的宽度 */
   overflow: hidden;
+}
+
+/* 菜单项 */
+.menu-group, .submenu-item {
+  font-weight: bold;
+  cursor: pointer;
+  padding-left: 18px;
+  position: relative;
+  white-space: nowrap; /* 防止换行 */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 文本超出时显示省略号 */
+  transition: padding-left 0.3s ease;
+}
+
+.menu-group::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: transform 0.2s ease;
+}
+
+.menu-group.expanded::before {
+  content: '▼';
+}
+
+/* 子菜单项 */
+.submenu {
+  margin-left: 16px;
+  transition: all 0.2s ease;
+}
+
+.submenu-item {
+  margin: 4px 0;
+  cursor: pointer;
+  padding-left: 8px;
+}
+
+.submenu-item:hover {
+  background-color: #ddd;
+}
+
+/* 侧边栏折叠时，调整字体大小和可见度 */
+#sidebar.collapsed .menu-group,
+#sidebar.collapsed .submenu-item {
+  padding-left: 10px;  /* 减小缩进 */
+  font-size: 12px;  /* 调整字体大小 */
+  text-align: center; /* 文本居中 */
 }
 
 /* 面包屑导航容器 */
