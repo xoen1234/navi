@@ -37,6 +37,7 @@ async function loadMenu() {
 
 // 主题切换
 document.getElementById('toggle-theme').addEventListener('click', () => {
+  document.body.classList.toggle('dark');
   document.getElementById('sidebar').classList.toggle('dark');
   document.getElementById('breadcrumb').classList.toggle('dark');
 });
