@@ -20,9 +20,11 @@ function buildMenu(menuData, parentElement = document.getElementById('menu'), pa
         li.classList.toggle('open');
       });
     } else if (item.url) {
+      
       li.addEventListener('click', () => {
         openTab(item.name, item.url, currentPath, item.keepAlive);
       });
+      if(item.default)openTab(item.name, item.url, currentPath, item.keepAlive);
     }
 
     parentElement.appendChild(li);

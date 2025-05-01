@@ -1,13 +1,26 @@
 [
   {
-    "name": "系统管理",
+    "name": "项目日常",
     "children": [
       {"name": "用户管理", "url": "http://mtab.yanyf.cn/"},          
-      {"name": "角色管理",   "url": "https://www.bilibili.com/" }
+      {"name": "角色管理",   "url": "https://www.bilibili.com/","default":true}
    ]
   },
   {
-    "name": "统计报表",
+    "name": "项目文档",
+    "children": [
+      {"name": "销售数据","url": "https://example.com/sales" },             
+      {  
+        "name": "财务数据",
+        "children": [
+          {"name": "月报","url": "https://www.bilibili.com/"},
+          {"name": "年报", "url": "https://example.com/year"}
+          ]     
+      }
+    ]
+  },
+  {
+    "name": "开发工具",
     "children": [
       {"name": "销售数据","url": "https://example.com/sales" },             
       {  
