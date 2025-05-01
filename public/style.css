@@ -1,6 +1,6 @@
 :root {
   --sidebar-width: 220px;
-  --sidebar-collapsed-width: 50px;
+  --sidebar-collapsed-width: 30px;
   --sidebar-background: #f8f9fa;
   --sidebar-color: #333;
   --breadcrumb-background: #e9ecef;
@@ -29,6 +29,23 @@ body {
   width: 100%;
 }
 
+/* 品牌区域的样式 */
+#brand {
+  padding: 20px 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--sidebar-color);
+  text-align: center;
+  background-color: var(--sidebar-background);
+  border-bottom: 1px solid #ddd;
+  transition: width 0.3s; /* 确保在折叠时平滑过渡 */
+}
+
+body.dark #brand {
+  color: var(--sidebar-color);
+}
+
+/* 侧边栏样式 */
 #sidebar {
   background-color: var(--sidebar-background);
   color: var(--sidebar-color);
@@ -36,10 +53,13 @@ body {
   transition: width 0.3s;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 #sidebar.collapsed {
   width: var(--sidebar-collapsed-width);
+  transition: width 0.3s ease-in-out;
 }
 
 #sidebar:hover {
@@ -85,6 +105,7 @@ body {
   align-items: center;
   background-color: var(--breadcrumb-background);
   color: var(--breadcrumb-color);
+  height: 10px;
   padding: 10px;
   border-bottom: 1px solid #ccc;
 }
@@ -111,7 +132,8 @@ body {
   padding: 10px;
   margin-right: 5px;
   background: var(--sidebar-background);
-  border-radius: 5px 5px 0 0;
+  border-radius: 6px 6px 6px 6px;
+  height: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
