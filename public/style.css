@@ -45,10 +45,12 @@ body {
   width: var(--sidebar-collapsed-width);
 }
 
-#sidebar:hover {
+/* #sidebar:hover {
+  width: var(--sidebar-width);
+} */
+.hover-expand #sidebar:hover {
   width: var(--sidebar-width);
 }
-
 /* 品牌区域的样式 */
 #brand {
   padding: 20px 10px;
@@ -129,7 +131,7 @@ body {
   padding: 10px;
   margin-right: 5px;
   background: var(--sidebar-background);
-  border-radius: 5px 5px 0 0;
+  border-radius: 6px 6px 6px 6px;
   cursor: pointer;
   display: flex;
   height: 10px;
@@ -239,4 +241,20 @@ body.dark #brand {
   background-color: var(--breadcrumb-background);
   color: var(--breadcrumb-color);
   cursor: pointer;
+}
+
+.context-menu {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.context-menu div {
+  padding: 8px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.context-menu div:hover {
+  background-color: #f0f0f0;
 }

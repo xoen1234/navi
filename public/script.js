@@ -76,9 +76,6 @@ function openTab(title, url, path = [title]) {
   switchTab(title);
 }
 
-
-
-
 function switchTab(title) {
   Object.keys(tabs).forEach(key => {
     tabs[key].tab.classList.remove('active');
@@ -92,8 +89,6 @@ function switchTab(title) {
   target.iframe.style.display = 'block';
   updateBreadcrumb(target.path);
 }
-
-
 
 function removeTab(title, tabEl) {
   const tabData = tabs[title];
@@ -118,7 +113,7 @@ function updateBreadcrumb(title) {
 }
 
 
-let hoverExpandEnabled = true;
+let hoverExpandEnabled = false;
 
 // 悬停开关按钮
 document.getElementById("hover-toggle").addEventListener("click", () => {
@@ -143,3 +138,7 @@ document.getElementById("manual-toggle").addEventListener("click", () => {
   const isCollapsed = sidebar.classList.contains("collapsed");
   document.getElementById("manual-toggle").textContent = isCollapsed ? "📌 展开" : "📌 收起";
 });
+
+
+
+
