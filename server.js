@@ -15,13 +15,19 @@ app.get('/menu', (req, res) => {
 app.post('/api/save-menu', (req, res) => {
   const menuData = req.body;
   const filePath = path.join(__dirname, 'public', 'menu.json');
-
-  fs.writeFile(filePath, JSON.stringify(menuData, null, 2), 'utf8', (err) => {
+  let jsonStr
+  try {
+    jsonStr = JSON.stringify(menuData, null, 2);
+  } catch (err) {
+    console.error('JSON 格式校验失败:', err.message);
+    return res.status(400).send('JSON 格式错误');
+  }
+  fs.writeFile(filePath, jsonStr, 'utf8', (err) => {
     if (err) {
       console.error('保存 menu.json 失败:', err);
       return res.status(500).send('保存失败');
     }
-    console.log('menu.json 保存成功');
+    console.log('时间:'+new Date().toISOString()+'______IP:'+req.ip+',_____menu.json 保存成功');
     res.sendStatus(200);
   });
 });

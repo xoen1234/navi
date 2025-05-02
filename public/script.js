@@ -209,11 +209,6 @@ closeMenuBtn.addEventListener('click', () => {
   menuEditorModal.classList.add('hidden');
 });
 
-// 全局点击关闭菜单
-document.addEventListener('click', (e) => {
-  if (!settingsBtn.contains(e.target) && !settingsMenu.contains(e.target)) {
-    settingsMenu.style.display = 'none';
-  }
-});
+
 
 
