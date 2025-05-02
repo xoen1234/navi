@@ -117,6 +117,8 @@ body {
   font-size: 18px;
   cursor: pointer;
   color: inherit;
+  float: right; /* 让按钮靠右 */
+  margin-left: 8px; /* 按钮间留点间距 */
 }
 
 #tabs-container {
@@ -199,16 +201,6 @@ body.dark #sidebar.collapsed #brand {
 }
 
 
-
-/* 切换主题按钮样式 */
-.theme-toggle-btn {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  color: inherit;
-}
-
 .sidebar-footer {
   position: absolute;
   bottom: 0;
@@ -257,6 +249,7 @@ body.dark #sidebar.collapsed #brand {
   align-items: center;
   gap: 6px;
   position: relative;
+  margin-left: auto;
 }
 
 /* 设置按钮右侧悬浮菜单样式 */

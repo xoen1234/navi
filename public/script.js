@@ -2,7 +2,7 @@
 fetch('menu.json')
   .then(res => res.json())
   .then(data => buildMenu(data));
-let defaulted = false
+let defaulted 
 function buildMenu(menuData, parentElement = document.getElementById('menu'), path = []) {
   menuData.forEach(item => {
     const li = document.createElement('li');
