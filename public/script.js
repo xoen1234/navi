@@ -2,7 +2,7 @@
 fetch('menu.json')
   .then(res => res.json())
   .then(data => buildMenu(data));
-
+let defaulted = false
 function buildMenu(menuData, parentElement = document.getElementById('menu'), path = []) {
   menuData.forEach(item => {
     const li = document.createElement('li');
@@ -24,13 +24,28 @@ function buildMenu(menuData, parentElement = document.getElementById('menu'), pa
       li.addEventListener('click', () => {
         openTab(item.name, item.url, currentPath, item.keepAlive);
       });
-      if(item.default)openTab(item.name, item.url, currentPath, item.keepAlive);
+      if(item.default&&!defaulted)openTab(item.name, item.url, currentPath, item.keepAlive);
     }
 
     parentElement.appendChild(li);
   });
+  defaulted = true
 }
-  
+  // 刷新侧边栏
+function refreshSidebar() {
+  // 清空当前菜单内容
+  const menuContainer = document.getElementById('menu');
+  menuContainer.innerHTML = '';
+
+  // 重新加载并构建菜单
+  fetch('menu.json')
+    .then(res => res.json())
+    .then(data => buildMenu(data))
+    .catch(err => {
+      console.error('加载菜单失败:', err);
+      alert('菜单加载失败，请稍后再试。');
+    });
+}
 
 // 主题切换
 document.getElementById('toggle-theme').addEventListener('click', () => {
@@ -146,5 +161,59 @@ document.getElementById("manual-toggle").addEventListener("click", () => {
 });
 
 
+// 设置按钮行为
+const settingsBtn = document.getElementById('settings-btn');
+const editMenuBtn = document.getElementById('edit-menu-btn');
+const menuEditorModal = document.getElementById('menu-editor-modal');
+const saveMenuBtn = document.getElementById('save-menu');
+const closeMenuBtn = document.getElementById('close-menu');
+
+const menuEditor = document.getElementById("menuEditor");
+
+settingsBtn.addEventListener("click", () => {
+  fetch("menu.json")
+    .then(res => res.json())
+    .then(data => {
+      const formatted = JSON.stringify(data, null, 2);
+      menuEditor.textContent = formatted;
+      menuEditorModal.classList.remove("hidden");
+    });
+});
+
+saveMenuBtn.addEventListener('click', async () => {
+  try {
+    const content = menuEditor.textContent;
+    const newMenu = JSON.parse(content);
+
+    const res = await fetch('/api/save-menu', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newMenu)
+    });
+
+    if (res.ok) {
+      alert('菜单已保存到服务器');
+      menuEditorModal.classList.add('hidden');
+            // 保存后刷新菜单
+            refreshSidebar();
+    } else {
+      alert('保存失败，请检查服务器日志');
+    }
+  } catch (err) {
+    alert('JSON 格式错误，请检查后重试。');
+  }
+});
+
+// 点击关闭按钮
+closeMenuBtn.addEventListener('click', () => {
+  menuEditorModal.classList.add('hidden');
+});
+
+// 全局点击关闭菜单
+document.addEventListener('click', (e) => {
+  if (!settingsBtn.contains(e.target) && !settingsMenu.contains(e.target)) {
+    settingsMenu.style.display = 'none';
+  }
+});
 
 
