@@ -322,3 +322,10 @@ body.dark #sidebar.collapsed #brand {
   overflow: auto;
   height: 800px;
 }
+
+#frame-url {
+  left: 57%;
+  position: absolute;
+  transform: translateX(-50%);
+  pointer-events: none;
+}

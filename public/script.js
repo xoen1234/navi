@@ -123,7 +123,7 @@ function switchTab(id) {
 
   target.tab.classList.add('active');
   target.iframe.style.display = 'block';
-  updateBreadcrumb(target.path);
+  updateBreadcrumb(target.path,target.iframe.src);
 }
 
 
@@ -145,8 +145,9 @@ function removeTab(id) {
 
 
 // 面包屑
-function updateBreadcrumb(title) {
+function updateBreadcrumb(title,url) {
   document.getElementById('breadcrumb').textContent = title;
+  document.getElementById('frame-url').textContent = url;
 }
 
 

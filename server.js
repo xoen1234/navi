@@ -43,6 +43,7 @@ function startProxyServer(listenPort, target) {
   app.use('/', createProxyMiddleware({
     target,
     changeOrigin: true,
+    ws: true, 
     onProxyReq(proxyReq, req, res) {
       // 这里可以改请求头，让 Jenkins 误认为来自“同源”
       proxyReq.setHeader('Host',       new URL(target).host);
