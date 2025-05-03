@@ -3,9 +3,17 @@
     "name": "项目日常",
     "children": [
       {
-        "name": "用户管理2",
-        "url": "http://mtab.yanyf.cn/",
+        "name": "mtab",
+        "url": "http://mtab.yanyf.cn",
         "default": true
+      },
+      {
+        "name": "销售数据销售数据销售数据销售数据",
+        "url": "https://www.bilibili.com/"
+      },
+      {
+        "name": "mtab",
+        "url": "http://localhost:3001/webshell/?target=http://localhost:40214/"
       }
     ]
   },
@@ -13,15 +21,23 @@
     "name": "项目文档",
     "children": [
       {
-        "name": "销售数据",
-        "url": "https://www.bilibili.com/"
-      },
-      {
         "name": "财务数据",
         "children": [
           {
-            "name": "月报",
-            "url": "https://www.bilibili.com/"
+            "name": "mtab",
+            "url": "http://localhost:40214/webshell?target=/"
+          },
+          {
+            "name": "jenkins",
+            "url": "http://192.168.31.125:8089"
+          },
+          {
+            "name": "jellyfin_shell",
+            "url": "http://localhost:8089/webshell?target=/"
+          },
+          {
+            "name": "test",
+            "url": "http://localhost/?target=idcardGegerate.html"
           }
         ]
       }

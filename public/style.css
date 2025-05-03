@@ -1,5 +1,5 @@
 :root {
-  --sidebar-width: 160px;
+  --sidebar-width: 180px;
   --sidebar-collapsed-width: 30px;
   --sidebar-background: #c7cdd3;
   --sidebar-color: #333;
@@ -10,7 +10,7 @@
 }
 
 body.dark {
-  --sidebar-background: #222;
+  --sidebar-background: #171717;
   --sidebar-color: #3b3b3c;
   --breadcrumb-background: #333;
   --breadcrumb-color: #fff;
@@ -140,6 +140,7 @@ body {
   display: flex;
   height: 10px;
   align-items: center;
+  gap: 16px;
   color:var(--word-color);
 }
 

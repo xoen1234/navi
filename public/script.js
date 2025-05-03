@@ -2,7 +2,7 @@
 fetch('menu.json')
   .then(res => res.json())
   .then(data => buildMenu(data));
-let defaulted 
+let defaulted = false
 function buildMenu(menuData, parentElement = document.getElementById('menu'), path = []) {
   menuData.forEach(item => {
     const li = document.createElement('li');
@@ -60,6 +60,7 @@ function generateTabId() {
   return `tab-${++tabIdCounter}`;
 }
 let tabs = {};
+
 function openTab(title, url, path = [title]) {
   const id = generateTabId();
 
@@ -67,7 +68,9 @@ function openTab(title, url, path = [title]) {
   const tab = document.createElement('div');
   tab.className = 'tab active';
   tab.dataset.id = id; // 设置唯一 ID
-  tab.textContent = title;
+  // 创建标签标题
+  const tabTitle = document.createElement('span');
+  tabTitle.textContent = title;
 
   const closeBtn = document.createElement('span');
   closeBtn.className = 'close-btn';
@@ -77,7 +80,20 @@ function openTab(title, url, path = [title]) {
     removeTab(id);
   });
 
+  const backBtn = document.createElement('span');
+  backBtn.className = 'back-btn';
+  backBtn.textContent = '⟳';
+  backBtn.style.marginRight = '8px';
+  backBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // refreshIframe(id);
+    iframe.src = url  + (url.includes('?') ? '&' : '?') + '_t=' + Date.now();
+  });
+
+  tab.appendChild(backBtn);
+  tab.appendChild(tabTitle);
   tab.appendChild(closeBtn);
+
   tab.addEventListener('click', () => switchTab(id));
 
   tabsContainer.appendChild(tab);

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>壳子页面 - 可回退子页面</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .nav-bar {
+      background: #f0f0f0;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+    .nav-bar button {
+      margin-right: 10px;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 48px); /* 留出导航栏高度 */
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-bar" style="padding: 2px;">
+    <button id="backBtn" style="padding: 3px 12px">← 返回</button>
+    <span id="pageTitle"></span>
+  </div>
+
+  <iframe id="contentFrame" src=""></iframe>
+
+  <script>
+    // 解析 URL 参数
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    const targetUrl = getQueryParam('target');
+    const iframe = document.getElementById('contentFrame');
+    const backBtn = document.getElementById('backBtn');
+
+    if (targetUrl) {
+      iframe.src = targetUrl;
+      iframe.onload = function() {
+        pageTitle.textContent = iframe.contentWindow.location.href;
+      };
+    } else {
+      alert("未指定 target 参数，例如 ?target=/proxy/app1/");
+    }
+
+    backBtn.addEventListener('click', () => {
+      try {
+        iframe.contentWindow.history.back();
+      } catch (err) {
+        console.error("回退失败：", err);
+        alert("无法回退，可能不是同源或无历史记录");
+      }
+    });
+  </script>
+
+</body>
+</html>
